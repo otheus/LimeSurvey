@@ -333,7 +333,7 @@ class QuestionTheme extends LSActiveRecord
         if (!empty($aThemes['available_themes'])) {
             if (!empty($questionsInDB)) {
                 foreach ($questionsInDB as $questionInDB) {
-                    if (array_key_exists($questionKey = $questionInDB->name . '_' . $questionInDB->question_type, $aThemes)) {
+                    if (array_key_exists($questionKey = $questionInDB->name . '_' . $questionInDB->question_type, $aThemes['available_themes'])) {
                         unset($aThemes['available_themes'][$questionKey]);
                     }
                 }
