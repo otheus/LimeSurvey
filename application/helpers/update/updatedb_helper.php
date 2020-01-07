@@ -3042,6 +3042,18 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
             $oDB->createCommand()->update('{{settings_global}}', array('stg_value'=>424), "stg_name='DBVersion'");
             $oTransaction->commit();
         }
+        if ($iOldDBVersion < 425) {
+            $aUserDirectory = QuestionTheme::getAllQuestionXMLPaths(false, false, true);
+            $aUserXMLPaths = array_key_first($aUserDirectory);
+            foreach ($aUserDirectory[$aUserXMLPaths] as $sXMLDirectoryPath) {
+                $aSuccess = QuestionTheme::convertLS3toLS4($sXMLDirectoryPath);
+                if ($aSuccess['success']) {
+                    $oQuestionTheme = new QuestionTheme;
+                    $oQuestionTheme->importManifest($sXMLDirectoryPath, true);
+                };
+            }
+            $oDB->createCommand()->update('{{settings_global}}', array('stg_value' => 425), "stg_name='DBVersion'");
+        }
     } catch (Exception $e) {
         Yii::app()->setConfig('Updating', false);
         $oTransaction->rollback();
