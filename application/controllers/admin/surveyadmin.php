@@ -313,7 +313,7 @@ class SurveyAdmin extends Survey_Common_Action
                 // Delete the temporary file
                 unlink($zipfilename);
 
-                if (is_null($aErrorFilesInfo) && is_null($aImportedFilesInfo)) {
+                if (empty($aErrorFilesInfo) && empty($aImportedFilesInfo)) {
                     Yii::app()->user->setFlash('error', gT("This ZIP archive contains no valid Resources files. Import failed."));
                     $this->getController()->redirect(array('admin/survey/sa/editlocalsettings/surveyid/'.$iSurveyID));
                 }
@@ -1350,7 +1350,7 @@ class SurveyAdmin extends Survey_Common_Action
 
             if ($action == 'importsurvey' && !$aData['bFailed']) {
                 $aImportResults = importSurveyFile($sFullFilepath, (Yii::app()->request->getPost('translinksfields') == '1'));
-                if (is_null($aImportResults)) {
+                if (empty($aImportResults)) {
                     $aImportResults = array(
                         'error'=>gT("Unknown error while reading the file, no survey created.")
                     );
