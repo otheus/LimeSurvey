@@ -1201,7 +1201,14 @@ class Survey_Common_Action extends CAction
         }
 
         if (!is_dir($destdir)) {
-                    mkdir($destdir);
+                    if (!mkdir($destdir, 0777, true)) {
+                        return array( array(), array(
+                           "filename" => '',
+                           "status" => gT("Unable to create directory `%s`.",$destdir)
+                        ) );
+                    };
+        }
+
         }
 
         $dh = opendir($extractdir);
